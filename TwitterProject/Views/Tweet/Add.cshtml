@@ -1,0 +1,20 @@
+﻿@model AddTweetViewModel
+
+@inject IHttpContextAccessor contxt;
+
+@{
+}
+
+
+<form method="post" action="Add">
+        <div class="form-floating my-3">
+            <textarea class="form-control" asp-for="Description" placeholder="Post Tweet here" id="floatingTextarea2" style="height: 100px"></textarea>
+            <label for="floatingTextarea2">Tweet</label>
+        </div>
+
+        <input type="hidden" asp-for="Upvote" value="0">
+    <input type="hidden" asp-for="UserName" value=@contxt.HttpContext.Session.GetString("username")>
+        <input type="hidden" asp-for="Liked" value="false">
+        <button type="submit" class="btn btn-info">Post</button>
+ </form>
+

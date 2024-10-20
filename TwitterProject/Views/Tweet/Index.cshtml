@@ -1,0 +1,84 @@
+﻿@using TwitterProject.Models.Domain;
+@model List<Tweet>
+
+@inject IHttpContextAccessor contxt;
+
+@{
+}
+
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<h1>Tweets</h1>
+
+<p>@contxt.HttpContext.Session.GetString("username")</p>
+
+@foreach (var tweet in Model)
+{
+    <div class="card my-4">
+        <div class="card-body">
+            <div class="d-flex">
+
+                <div class="flex-grow-1 ms-3">
+                    @using (Html.BeginForm("GoToView", "User", FormMethod.Post))
+                    {
+                        <button type="submit" class="card-title btn bg-transparent">@tweet.UserName</button>
+                        @Html.Hidden("UserClick", tweet.UserName)
+                    }
+
+                    <h2 class="card-text">@tweet.Description</h2>
+                </div>
+            </div>
+            <div class="d-flex justify-content-between mt-3">
+
+
+                    @using (Html.BeginForm("Like", "Tweet", FormMethod.Post))
+                    {
+                        @Html.Hidden("Id", tweet.Id)
+                        @Html.Hidden("Upvote", tweet.Upvote)
+                        @Html.Hidden("Liked", "False")
+                        @Html.Hidden("USername", tweet.UserName)
+
+                        <button type="submit" class="btn bg-transparent" style="font-size: 20px;">♡</button>
+                    }
+
+                       
+                    <span style="font-size: 20px;">@tweet.Upvote Likes</span>
+
+                    @using (Html.BeginForm("ViewComment", "Tweet", FormMethod.Post))
+                    {
+                        @Html.Hidden("TId", tweet.Id)
+
+                        <button type="submit" class="btn" style="font-size: 20px;">Comment</button>
+                    }
+
+
+
+
+            </div>
+            <div class="card">
+                @using (Html.BeginForm("DoComment", "Tweet", FormMethod.Post))
+                {
+                    @Html.Hidden("TId", tweet.Id)
+                    <div class="form-group">
+                        <input type="text" id="Title" name="Title" class="form-control" />
+                    </div>
+                    <button type="submit" class="btn" style="font-size: 20px;">Comment</button>
+                }
+            </div>
+
+            @if (contxt.HttpContext.Session.GetString("username") == tweet.UserName)
+            {
+                @using (Html.BeginForm("Delete", "Tweet", FormMethod.Post))
+                {
+                    @Html.Hidden("Id", tweet.Id)
+                    <button type="submit" class="btn btn-warning" style="font-size: 20px;">Delete</button>
+                }
+            }
+
+        </div>
+    </div>
+}

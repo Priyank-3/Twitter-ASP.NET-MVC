@@ -1,0 +1,26 @@
+﻿@using TwitterProject.Models.Domain;
+@model List<Comment>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+
+<div class="container my-4">
+    <h2>Comments for Tweet</h2>
+
+    @if (Model.Any())
+    {
+        @foreach (var comment in Model)
+        {
+            <div class="card card-body">
+                <h1>@comment.UserName</h1>
+                <h2>@comment.Title</h2>
+            </div>
+        }
+    }
+    else
+    {
+        <p>No comments available for this tweet.</p>
+    }
+</div>

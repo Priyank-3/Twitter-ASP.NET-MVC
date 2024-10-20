@@ -1,0 +1,35 @@
+﻿@using TwitterProject.Models.Domain
+@model List<Tweet>
+@inject IHttpContextAccessor contxt
+
+<div class="container my-4">
+    <center>
+        @if (Model.Count > 0)
+        {
+            <div class="row">
+                <div class="col-12">
+                    <h1 class="display-4">
+                        @if (Model[0].UserName != contxt.HttpContext.Session.GetString("username"))
+                        {
+                            @Model[0].UserName
+                        }
+                        else
+                        {
+                            @contxt.HttpContext.Session.GetString("username")
+                        }
+                    </h1>
+                </div>
+            </div>
+        }
+    </center>
+    <hr />
+
+    @foreach (var tweet in Model)
+    {
+        <div class="card my-4">
+            <div class="card-body">
+                <p class="card-text">@tweet.Description</p>
+            </div>
+        </div>
+    }
+</div>
